@@ -9,16 +9,17 @@ import Hero from './components/Hero';
 const App: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'letter' | 'date'>('letter');
   const [isMusicPlaying, setIsMusicPlaying] = useState(false);
+  const [audioAvailable, setAudioAvailable] = useState(true);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Background music URL (Romantic piano instrumental)
-  const musicUrl = "https://cdn.pixabay.com/audio/2022/02/07/audio_d0c6ff1bdd.mp3";
+  // Use local music file (add public/music.mp3 for background music; Pixabay CDN blocks hotlinking with 403)
+  const musicUrl = '/music.mp3';
 
   useEffect(() => {
     if (audioRef.current) {
       if (isMusicPlaying) {
         audioRef.current.play().catch(err => {
-          console.log("Autoplay blocked or audio error:", err);
+          console.log('Autoplay blocked or audio error:', err);
           setIsMusicPlaying(false);
         });
       } else {
@@ -32,11 +33,12 @@ const App: React.FC = () => {
       <FloatingHearts />
       
       {/* Actual Audio Element */}
-      <audio 
+      <audio
         ref={audioRef}
         src={musicUrl}
         loop
         preload="auto"
+        onError={() => setAudioAvailable(false)}
       />
       
       {/* Navigation & Header */}
@@ -46,17 +48,19 @@ const App: React.FC = () => {
           <span className="font-dancing text-2xl font-bold text-romantic-600">AmourAI</span>
         </div>
         
-        <button 
-          onClick={() => setIsMusicPlaying(!isMusicPlaying)}
-          className={`p-2 rounded-full transition-all ${
-            isMusicPlaying 
-            ? 'bg-romantic-100 text-romantic-600 shadow-inner' 
-            : 'hover:bg-romantic-50 text-slate-400'
-          }`}
-          title={isMusicPlaying ? "Mute Music" : "Play Romantic Music"}
-        >
-          {isMusicPlaying ? <Volume2 size={20} className="animate-pulse" /> : <VolumeX size={20} />}
-        </button>
+        {audioAvailable && (
+          <button
+            onClick={() => setIsMusicPlaying(!isMusicPlaying)}
+            className={`p-2 rounded-full transition-all ${
+              isMusicPlaying
+                ? 'bg-romantic-100 text-romantic-600 shadow-inner'
+                : 'hover:bg-romantic-50 text-slate-400'
+            }`}
+            title={isMusicPlaying ? 'Mute Music' : 'Play Romantic Music'}
+          >
+            {isMusicPlaying ? <Volume2 size={20} className="animate-pulse" /> : <VolumeX size={20} />}
+          </button>
+        )}
       </header>
 
       <main className="pt-24 pb-20 container mx-auto px-4 max-w-6xl">

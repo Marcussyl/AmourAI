@@ -18,4 +18,7 @@ View your app in AI Studio: https://ai.studio/apps/drive/1uLfVh6zYnnOY0ZtKKaIrzK
 2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
 3. Run the app:
    `npm run dev`
+
+**Optional – background music:** To enable the in-app music toggle, add an MP3 file at `public/music.mp3`. Without it, the music button is hidden.
+
 # AmourAI
