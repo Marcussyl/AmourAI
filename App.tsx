@@ -12,8 +12,8 @@ const App: React.FC = () => {
   const [audioAvailable, setAudioAvailable] = useState(true);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Use local music file (add public/music.mp3 for background music; Pixabay CDN blocks hotlinking with 403)
-  const musicUrl = '/music.mp3';
+  // Use base-relative path so music works on GitHub Pages (e.g. /AmourAI/) and locally
+  const musicUrl = `${import.meta.env.BASE_URL}music.mp3`;
 
   useEffect(() => {
     if (audioRef.current) {
